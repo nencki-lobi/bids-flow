@@ -15,11 +15,16 @@ def infotodict(seqinfo):
     subindex: sub index within group
     """
 
-    t1w = create_key('sub-{subject}/anat/sub-{subject}_T1w')
-    bold = create_key('sub-{subject}/func/sub-{subject}_task-fmri_run-{item:01d}_bold')
-    rest = create_key('sub-{subject}/func/sub-{subject}_task-rest_run-{item:01d}_bold')
-    fmap_phasediff = create_key('sub-{subject}/fmap/sub-{subject}_phasediff')
-    fmap_magnitude = create_key('sub-{subject}/fmap/sub-{subject}_magnitude')
+    t1w = create_key(
+        'sub-{subject}/anat/sub-{subject}_T1w')
+    bold = create_key(
+        'sub-{subject}/func/sub-{subject}_task-fmri_run-{item:01d}_bold')
+    rest = create_key(
+        'sub-{subject}/func/sub-{subject}_task-rest_run-{item:01d}_bold')
+    fmap_phasediff = create_key(
+        'sub-{subject}/fmap/sub-{subject}_phasediff')
+    fmap_magnitude = create_key(
+        'sub-{subject}/fmap/sub-{subject}_magnitude')
 
     info = {t1w: [], rest: [], bold: [], fmap_phasediff: [],
             fmap_magnitude: []}
@@ -28,14 +33,14 @@ def infotodict(seqinfo):
         # s is a namedtuple with fields equal to the names of the columns
         # found in dicominfo.txt
         if ('t1_mpr' in s.protocol_name) or ('T1w' in s.protocol_name):
-            if not s.is_derived: #MPR Range recos etc
+            if not s.is_derived:  # MPR Range recos etc
                 info[t1w] = [s.series_id]
         elif s.protocol_name == 'gre_field_mapping' and s.image_type[2] == 'M':
             print("omit FM")
-            #info[fmap_magnitude].append(s.series_id)
+            # info[fmap_magnitude].append(s.series_id)
         elif s.protocol_name == 'gre_field_mapping' and s.image_type[2] == 'P':
             print("omit FM")
-            #info[fmap_phasediff].append(s.series_id)
+            # info[fmap_phasediff].append(s.series_id)
         elif ('rest' in s.protocol_name):
             info[rest].append(s.series_id)
         elif ('ep2d_bold' in s.protocol_name) or ('task' in s.protocol_name):
