@@ -5,6 +5,11 @@ t_r_regex = re.compile(
     'task-(?P<tasklabel>[a-zA-Z]+)_run-(?P<runlabel>[0-9]+)')
 
 
+def get_dim4_and_numeric_id(x):
+    """A helper function for sorting"""
+    return((x.dim4, int(re.match('[0-9]+', x.series_id).group())))
+
+
 def find_repeated(seqinfo):
     """Create a list of series_ids from repeated runs
     Assumes that a run should be excluded on two criterions, in this order:
@@ -28,7 +33,7 @@ def find_repeated(seqinfo):
         if len(s_list) > 1:
             # more than 1 occurence of task&run
             # sort by dim4 and then series_id
-            s_list.sort(key=lambda x: (x.dim4, x.series_id))
+            s_list.sort(key=get_dim4_and_numeric_id)
             # list all but one for exclusion
             for i in range(len(s_list) - 1):
                 exclusions.append(s_list[i].series_id)
