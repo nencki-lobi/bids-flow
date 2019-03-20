@@ -1,0 +1,4 @@
+dicom2bxh: file exists ('/home/input/dicoms.bxh')
+input - dicoms.bxh
+output - /home/input/dicoms
+Output directory /home/input/dicoms exists, aborting... at /opt/bxh_xcede_tools-1.11.14-lsb30.x86_64/bin/fmriqa_phantomqa.pl line 149.
