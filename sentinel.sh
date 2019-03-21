@@ -6,10 +6,10 @@ i=${d##*/}
 orig=/opt/dicom_dump/$i
 
 if [[ "$i" = fantom_birn* ]]; then
-machine = ~/bids-flow/phantom_fmriqa.sh
+machine = ~/bids/phantom_fmriqa.sh
 dest=/opt/phantom/dicoms/$i
 else
-machine = ~/bids-flow/bids_apps.sh
+machine = ~/bids/bids_apps.sh
 dest=/opt/bids/dicoms/$i
 fi
 
