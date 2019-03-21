@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #for i in *; do
-for d in `find /opt/dicom_dump_2 -mindepth 1 -maxdepth 1 -type d`; do
+for d in `find /opt/dicom_dump -mindepth 1 -maxdepth 1 -type d`; do
 i=${d##*/}
-orig=/opt/dicom_dump_2/$i
+orig=/opt/dicom_dump/$i
 
 if [[ "$i" = fantom_birn* ]]; then
 machine=~/bids/phantom_fmriqa.sh
