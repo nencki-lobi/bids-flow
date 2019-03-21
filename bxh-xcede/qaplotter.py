@@ -8,8 +8,9 @@ import csv
 from xml.dom import minidom
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as pyplot
-
 
 if len(sys.argv)==1 or len(sys.argv)>4:
 	print('Command: qaplotter.py directory output (months). Program will search and load QA XML files. Longitudinal plots will be saved in specified dir.')
