@@ -6,8 +6,8 @@ source /etc/afni/afni.sh
 
 cd /home/input
 #1 remove old files
-rm dicoms.bxh
-rm -r fmriqa
+rm -f dicoms.bxh
+rm -rf fmriqa
 #2 convert to bxh
 dicom2bxh *.dcm dicoms.bxh
 #3 analyze

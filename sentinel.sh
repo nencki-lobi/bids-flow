@@ -17,13 +17,13 @@ if [ ! -f $orig/busy ] ; then
 if [ ! -f $dest/busy ] ; then
 
 cp -r $orig $dest
-rm -r $orig
+rm -rf $orig
 touch $dest/busy
 
 . $machine $i
 
 cp -r $dest /opt/.trash/
-rm -r $dest
+rm -rf $dest
 
 break #one subject at time and exits
 fi
