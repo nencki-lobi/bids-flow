@@ -1,4 +1,3 @@
-dicom2bxh: file exists ('/home/input/dicoms.bxh')
-input - dicoms.bxh
-output - /home/input/dicoms
-Output directory /home/input/dicoms exists, aborting... at /opt/bxh_xcede_tools-1.11.14-lsb30.x86_64/bin/fmriqa_phantomqa.pl line 149.
+build: docker build -t fmriqa bxh-xcede/
+run: docker run -it --rm -v `pwd`/ep2d_bold_ldt_audio:/home/input fmriqa
+results: directory 'fmriqa' will be created at mounted path
