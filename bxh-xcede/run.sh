@@ -12,3 +12,4 @@ rm -rf fmriqa
 dicom2bxh *.dcm dicoms.bxh
 #3 analyze
 csh -c "fmriqa_phantomqa.pl dicoms.bxh fmriqa"
+chmod 777 -R fmriqa
