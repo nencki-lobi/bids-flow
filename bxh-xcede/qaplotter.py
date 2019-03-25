@@ -72,6 +72,8 @@ pyplot.figure()
 for fn in fieldnames:
 	y = [d[fn] for d in data_all]	
 	pyplot.plot(x, y, '-o', label=fn[-1:])
+if len(sys.argv)==4:
+	pyplot.xlim(begin,today)
 pyplot.legend(loc='upper left')
 pyplot.title('FWHM')
 pyplot.xticks(rotation=70)
