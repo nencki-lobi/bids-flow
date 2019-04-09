@@ -8,6 +8,7 @@ orig=/opt/dicom_dump/$i
 if [[ "$i" = fantom_birn* ]]; then
 machine=~/bids/phantom_fmriqa.sh
 dest=/opt/phantom/dicoms/$i
+echo FANTOM
 else
 machine=~/bids/bids_apps.sh
 dest=/opt/bids/dicoms/$i
