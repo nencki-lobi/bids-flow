@@ -6,5 +6,5 @@ docker run --rm --user $(id -u):$(id -g) --network none -v /opt/bids/dicoms:/dat
 docker run --rm --user $(id -u):$(id -g) --network none -v /opt/bids:/data:ro -v /opt/bids/mriqc_12:/out poldracklab/mriqc:0.12.1 /data /out participant --participant-label $subjid
 docker run --rm --user $(id -u):$(id -g) --network none -v /opt/bids:/data:ro -v /opt/bids/mriqc_12:/out poldracklab/mriqc:0.12.1 /data /out group
 
-docker run --rm --user $(id -u):$(id -g) --network none -v /opt/bids:/data:ro -v /opt/bids/mriqc:/out poldracklab/mriqc:0.15.0 /data /out participant --participant-label $subjid
-docker run --rm --user $(id -u):$(id -g) --network none -v /opt/bids:/data:ro -v /opt/bids/mriqc:/out poldracklab/mriqc:0.15.0 /data /out group
+docker run --rm --user $(id -u):$(id -g) --network none -v /opt/bids:/data:ro -v /opt/bids/mriqc:/out poldracklab/mriqc:0.15.0 --fd_thres 0.5 /data /out participant --participant-label $subjid
+docker run --rm --user $(id -u):$(id -g) --network none -v /opt/bids:/data:ro -v /opt/bids/mriqc:/out poldracklab/mriqc:0.15.0 --fd_thres 0.5 /data /out group
