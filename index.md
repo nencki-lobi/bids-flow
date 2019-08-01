@@ -56,13 +56,17 @@ We combined a set of existing tools with lua, python and bash scripting to creat
 
 We were inspired by the [ReproNim](https://github.com/ReproNim/reproin) project, which aims to provide a similar solution. However, we decided to take a learn-by-doing approach and build a pipeline which is less generic but more suited to our current needs and capabilities. Here we describe our approach and highlight the already existing tools which we found useful.
 
-1. We agreed on a set of sequence names to be used on the scanner: e.g fMRI scans should start with `task-taskname`, anatomical scans should start with `anat` or `T1w`, while scans performed on a phantom should start with `fantom`.
+1. We agreed on a set of sequence names to be used on the scanner: e.g names of fMRI scans should start with `task-taskname`, anatomical scans should start with `anat` or `T1w`, while scans performed on a phantom should start with `fantom`.
 2. The scanner sends the data to a PACS (Picture Archiving and Communication System) server. Here we use [Orthanc](https://www.orthanc-server.com/) to manage the files and database. Since Orthanc supports lua scripting, we use an `OnStableStudy` script (triggered if no new scans from a study arrive for a specified period of time) to copy files to another, computational server (currently a repurposed PC).
 3. On the computational server we defined a cron job, which periodically launches the `sentinel.sh` script, which determines the next steps to be taken. During file transfer we simply use `busy` files as flags to mark whether or not processing can proceed. Following steps are contained in separate bash scripts, and selected based on the discovered folder names (which correspond to sequence names).
-
-4. To be continued.
+4. If the scan was done on a phantom, the fBIRN QA procedure is launched. The results are collected into an html page, which can be viewed through local network. This allows us to run scanner stability tests, both on schedule and on demand.
+5. In case of a regular study, the scans are first converted to BIDS-organised NIfTI files using [heudiconv](https://github.com/nipy/heudiconv) (for which we prepared a general heuristic reflecting our naming conventions). Next, they are submitted to [mriqc](https://mriqc.readthedocs.io/), which calculates various statistics including SNR, FWHM and subject motion. Mriqc generates html reports (both participant and group level), which are made accessible on local network. This allows users to monitor the quality of recently acquired data while being able to compare them to general trends for data acquired over a large period of time.
+6. In principle, given sufficient computing resources, any other BIDS-App ([fmriprep](https://fmriprep.readthedocs.io) being the primary candidate) could be launched at this point, so that both raw data, QC reports and processed data would be made available to the researchers.
 
 # Future plans
+We are considering further possibilities, such as:
+* Managing user accounts, configuring file access and allowing user-specific configurations, so that each investigator would be able to fetch their data from the computational server (both raw-BIDS and processed to their needs).
+* Moving to [XNAT](https://xnat.org/) platform. XNAT has a powerful set of tools for organising data, running pipelines remotely and managing data access through a web browser interface.
 
 # List of software
 
