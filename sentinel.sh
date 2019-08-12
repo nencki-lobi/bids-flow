@@ -1,17 +1,17 @@
 #!/bin/bash
 
 #for i in *; do
-for d in `find /opt/dicom_dump -mindepth 1 -maxdepth 1 -type d`; do
+for d in `find /srv/dicom_dump -mindepth 1 -maxdepth 1 -type d`; do
 i=${d##*/}
-orig=/opt/dicom_dump/$i
+orig=/srv/dicom_dump/$i
 
 if [[ "$i" = fantom_birn* ]]; then
-machine=~/bids/phantom_fmriqa.sh
-dest=/opt/phantom/dicoms/$i
+machine=~/bids-flow/phantom_fmriqa.sh
+dest=/srv/fbirnqa/phantom/dicoms/$i
 echo FANTOM
 else
-machine=~/bids/bids_apps.sh
-dest=/opt/bids/dicoms/$i
+machine=~/bids-flow/bids_apps.sh
+dest=/srv/mriqc/dicoms/$i
 fi
 
 if [ ! -f $orig/busy ] ; then
@@ -23,7 +23,7 @@ touch $dest/busy
 
 . $machine $i
 
-cp -r $dest /opt/.trash/
+cp -r $dest /srv/.trash/
 rm -rf $dest
 
 break #one subject at time and exits

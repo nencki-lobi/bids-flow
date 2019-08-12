@@ -1,4 +1,5 @@
 #! /bin/bash
+#group report is outdated!
 #group report is optimised for mriqc 0.12.1
 cd /opt/bids/mriqc_12
 mkdir -p reports/$1
