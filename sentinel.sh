@@ -7,7 +7,7 @@ orig=/srv/dicom_dump/$i
 
 if [[ "$i" = fantom_birn* ]]; then
 machine=~/bids-flow/phantom_fmriqa.sh
-dest=/srv/fbirnqa/phantom/dicoms/$i
+dest=/srv/fmriqa/dicoms/$i
 echo FANTOM
 else
 machine=~/bids-flow/bids_apps.sh

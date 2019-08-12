@@ -2,7 +2,7 @@
 
 subjid=${1//_/}
 
-docker run --rm --user $(id -u):$(id -g) --network none -v /srv/mriqc/dicoms:/data:ro -v /home/bkossows/bids-apps/heuristic.py:/heuristic.py -v /srv/mriqc:/output nipy/heudiconv:latest -d /data/{subject}/*/*/*.dcm -s $1 -f /heuristic.py -b --minmeta --overwrite -o /output
+docker run --rm --user $(id -u):$(id -g) --network none -v /srv/mriqc/dicoms:/data:ro -v /home/bkossows/bids-flow/heuristic.py:/heuristic.py -v /srv/mriqc:/output nipy/heudiconv:0.5.4 -d /data/{subject}/*/*/*.dcm -s $1 -f /heuristic.py -b --minmeta --overwrite -o /output
 #docker run --rm --user $(id -u):$(id -g) --network none -v /srv/mriqc:/data:ro -v /opt/bids/mriqc_12:/out poldracklab/mriqc:0.12.1 /data /out participant --participant-label $subjid
 #docker run --rm --user $(id -u):$(id -g) --network none -v /srv/mriqc:/data:ro -v /opt/bids/mriqc_12:/out poldracklab/mriqc:0.12.1 /data /out group
 
