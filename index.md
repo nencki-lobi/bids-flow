@@ -12,7 +12,7 @@ Picture above: MRI data are automatically submitted to a quality control pipelin
 Laboratory of Brain Imaging ([LOBI](https://lobi.nencki.gov.pl/)) is a core facility at [Nencki Institute](http://en.nencki.edu.pl/), equipped with 3T MRI scanner available for both internal and external research groups. This means that in a typical month there are around 10 research projects sharing the scanner time. The emergence of Brain Imaging Data Structure, a standard of data organisation, and related free software ecosystem prompted us to explore ways of improving the data flow from scanner to the researchers.
 
 ## What is BIDS
-BIDS (Brain Imaging Data Structure) is a standard for organisation of neuroimaging data and metadata. It is intended to be both intuitive for users and machine-readable, so that automated tools can be executed with minimal input. A community effort, created initially for MRI, it now encompasses also MEG, EEG and iEEG. You can learn more on [BIDS website](https://bids.neuroimaging.io/).
+BIDS (Brain Imaging Data Structure) is a standard for organisation of neuroimaging data and metadata. It is intended to be both intuitive for users and machine-readable, so that automated tools can be executed with minimal input. A community effort, created initially for MRI, it now encompasses also MEG, EEG and iEEG. You can learn more on [BIDS website](https://bids.neuroimaging.io/) or from ([Gorgolewski et al., 2016](http://www.nature.com/articles/sdata201644)).
 
 In short, the files follow a structure like this:
 ```
@@ -26,14 +26,16 @@ sub-Abcdef
 │   ├── sub-Abcdef_task-de_events.tsv
 ```
 
+## What are BIDS-Apps
+
 Together with the standard came **BIDS-Apps** - *container images capturing a neuroimaging pipeline that takes a BIDS formatted dataset as input*. A container can be thought of as a self-sufficient package of software with all its dependencies, which can be run on different operating system (Windows / MacOS / Linux) using Docker or Singularity. You can learn more at the [BIDS-Apps website](https://bids-apps.neuroimaging.io/).
 
 Running an example app with default parameters is as simple as:
 
 ```
-docker run -ti --rm \        # docker and its options
+docker run -ti --rm          # docker and its options
 	-v <bids_dir>:/data:ro   # mount data folder, read-only
-	-v <bids_dir>:/out       # mount output folder
+	-v <out_dir>:/out        # mount output folder
 	bids/example:0.0.4       # specify the app to be pulled from Docker Hub
 	/data /out participant   # input path, output path, analysis level
 ```
@@ -45,7 +47,7 @@ We created a data export extension for [Horos](https://horosproject.org) DICOM b
 
 The plugin is GPL-licensed and can be obtained from [GitHub](https://github.com/mslw/horos-bids-output).
 
-Relying on user annotations ensures **flexibility** - conversion does not require predefined sequence naming patterns (as long as scans are distincly named). Basic rules for generating or discarding multiple runs of a given task are provided. The **graphical interface** is friendly for non-technical users. **Documentation** with usage instructions is also provided.
+Relying on user annotations ensures **flexibility** - conversion does not require predefined sequence naming patterns (as long as scans are distincly named). Multiple runs of a given task can be either discarded or annotated with run labels (basic rules for such cases are implemented). The **graphical interface** is friendly for non-technical users. **Documentation** with usage instructions is provided on project's GitHub page.
 
 The plugin was built for Horos, which is a DICOM browser with good database and network features, distributed under GNU LGPL License. For this reason, we have been using it on a designated computer to query and fetch DICOM files from PACS server, where all scanner data are stored. After fetching required files, users can manage their conversion and organisation using our plugin.
 
@@ -57,7 +59,7 @@ We combined a set of existing tools with lua, python and bash scripting to creat
 We were inspired by the [ReproNim](https://github.com/ReproNim/reproin) project, which aims to provide a similar solution. However, we decided to take a learn-by-doing approach and build a pipeline which is less generic but more suited to our current needs and capabilities. Here we describe our approach and highlight the already existing tools which we found useful.
 
 1. We agreed on a set of sequence names to be used on the scanner: e.g names of fMRI scans should start with `task-taskname`, anatomical scans should start with `anat` or `T1w`, while scans performed on a phantom should start with `fantom`.
-2. The scanner sends the data to a PACS (Picture Archiving and Communication System) server. Here we use [Orthanc](https://www.orthanc-server.com/) to manage the files and database. Since Orthanc supports lua scripting, we use an `OnStableStudy` script (triggered if no new scans from a study arrive for a specified period of time) to copy files to another, computational server (currently a repurposed PC).
+2. The scanner sends the data to a PACS (Picture Archiving and Communication System) server. Here we use [Orthanc](https://www.orthanc-server.com/) to manage the files and database. Since Orthanc supports lua scripting, we use an `OnStableStudy` script (triggered if no new scans from a study arrive for a specified period of time) to copy files to a separate computational server (currently a repurposed PC).
 3. On the computational server we defined a cron job, which periodically launches the `sentinel.sh` script, which determines the next steps to be taken. During file transfer we simply use `busy` files as flags to mark whether or not processing can proceed. Following steps are contained in separate bash scripts, and selected based on the discovered folder names (which correspond to sequence names).
 4. If the scan was done on a phantom, the fBIRN QA procedure is launched. The results are collected into an html page, which can be viewed through local network. This allows us to run scanner stability tests, both on schedule and on demand.
 5. In case of a regular study, the scans are first converted to BIDS-organised NIfTI files using [heudiconv](https://github.com/nipy/heudiconv) (for which we prepared a general heuristic reflecting our naming conventions). Next, they are submitted to [mriqc](https://mriqc.readthedocs.io/), which calculates various statistics including SNR, FWHM and subject motion. Mriqc generates html reports (both participant and group level), which are made accessible on local network. This allows users to monitor the quality of recently acquired data while being able to compare them to general trends for data acquired over a large period of time.
@@ -71,10 +73,10 @@ We are considering further possibilities, such as:
 # List of software
 
 Our contribution:
-* [Horos BIDS output plugin](https://github.com/mslw/horos-bids-output)
+* [Horos BIDS output plugin](https://github.com/mslw/horos-bids-output) - data export management
 * [Bids-flow](https://github.com/nencki-lobi/bids-flow) - automated data flow from scanner
 
-The following software has been essential for our project:
+The following software has been essential for our project (licenses listed to emphasise the role of free software):
 * [Horos](https://horosproject.org/) - DICOM browser (LGPL)
 * [dcm2niix](https://github.com/rordenlab/dcm2niix/) - DICOM to NIfTI converter (BSD, with some units public domain or MIT)
 * [Orthanc](https://www.orthanc-server.com/) - DICOM server (GPL)
