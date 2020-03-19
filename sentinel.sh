@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm -rf /srv/dicom_dump/'Service Patient____'/
 #for i in *; do
 for d in `find /srv/dicom_dump -mindepth 1 -maxdepth 1 -type d`; do
 i=${d##*/}
