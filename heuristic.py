@@ -87,7 +87,7 @@ def infotodict(seqinfo):
 
         # s is a namedtuple with fields equal to the names of the columns
         # found in dicominfo.txt
-        if ('t1_mpr' in s.protocol_name) or ('T1w' in s.protocol_name):
+        if ('t1_mpr' in s.protocol_name) or ('T1w' in s.protocol_name) or ('t1w' in s.protocol_name):
             if not s.is_derived:  # MPR Range recos etc
                 info[t1w] = [s.series_id]
         elif s.protocol_name == 'gre_field_mapping' and s.image_type[2] == 'M':
@@ -104,6 +104,6 @@ def infotodict(seqinfo):
                  })
         elif ('rest' in s.protocol_name):
             info[rest].append(s.series_id)
-        elif ('ep2d_bold' in s.protocol_name) or ('task' in s.protocol_name):
+        elif ('ep2d_bold' in s.protocol_name) or ('task' in s.protocol_name) or ('FMRI' in s.protocol_name):
             info[bold].append(s.series_id)
     return info
