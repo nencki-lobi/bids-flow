@@ -46,6 +46,10 @@ def create_key(template, outtype=('nii.gz',), annotation_classes=None):
     return template, outtype, annotation_classes
 
 
+def infotoids(seqinfos, outdir):
+    return {'session': seqinfos[0].date}
+
+
 def infotodict(seqinfo):
     """Heuristic evaluator for determining which runs belong where
 
@@ -58,7 +62,7 @@ def infotodict(seqinfo):
     """
 
     t1w = create_key(
-        'sub-{subject}/anat/sub-{subject}_T1w')
+        'sub-{subject}/ses-{session}/anat/sub-{subject}_ses-{session}_T1w')
     task_run = create_key(
         'sub-{subject}/func/sub-{subject}_task-{tasklabel}_run-{runlabel}'
         '_bold')
