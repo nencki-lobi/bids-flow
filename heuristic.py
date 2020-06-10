@@ -1,3 +1,4 @@
+import os
 import re
 from collections import defaultdict
 
@@ -44,6 +45,12 @@ def create_key(template, outtype=('nii.gz',), annotation_classes=None):
     if template is None or not template:
         raise ValueError('Template must be a valid format string')
     return template, outtype, annotation_classes
+
+
+def filter_files(fl):
+    if os.path.basename(fl) in ['busy', '.DS_Store']:
+        return False
+    return True
 
 
 def infotoids(seqinfos, outdir):
