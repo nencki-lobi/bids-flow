@@ -46,6 +46,14 @@ def create_key(template, outtype=('nii.gz',), annotation_classes=None):
     return template, outtype, annotation_classes
 
 
+def infotoids(seqinfos, outdir):
+    seqinfos=list(seqinfos)
+    subject= fixup_subjectid(seqinfos[0].patient_id)
+    return {
+        'subject': subject,
+        'session': seqinfos[0].date}
+
+
 def infotodict(seqinfo):
     """Heuristic evaluator for determining which runs belong where
 
@@ -58,18 +66,18 @@ def infotodict(seqinfo):
     """
 
     t1w = create_key(
-        'sub-{subject}/anat/sub-{subject}_T1w')
+        'sub-{subject}/{session}/anat/sub-{subject}_{session}_T1w')
     task_run = create_key(
-        'sub-{subject}/func/sub-{subject}_task-{tasklabel}_run-{runlabel}'
+        'sub-{subject}/{session}/func/sub-{subject}_{session}_task-{tasklabel}_run-{runlabel}'
         '_bold')
     bold = create_key(
-        'sub-{subject}/func/sub-{subject}_task-fmri_run-{item:01d}_bold')
+        'sub-{subject}/{session}/func/sub-{subject}_{session}_task-fmri_run-{item:01d}_bold')
     rest = create_key(
-        'sub-{subject}/func/sub-{subject}_task-rest_run-{item:01d}_bold')
+        'sub-{subject}/{session}/func/sub-{subject}_{session}_task-rest_run-{item:01d}_bold')
     fmap_phasediff = create_key(
-        'sub-{subject}/fmap/sub-{subject}_phasediff')
+        'sub-{subject}/{session}/fmap/sub-{subject}_{session}_phasediff')
     fmap_magnitude = create_key(
-        'sub-{subject}/fmap/sub-{subject}_magnitude')
+        'sub-{subject}/{session}/fmap/sub-{subject}_{session}_magnitude')
 
     info = {t1w: [], rest: [], bold: [], fmap_phasediff: [],
             fmap_magnitude: [], task_run: []}
@@ -107,3 +115,6 @@ def infotodict(seqinfo):
         elif ('ep2d_bold' in s.protocol_name) or ('task' in s.protocol_name) or ('FMRI' in s.protocol_name):
             info[bold].append(s.series_id)
     return info
+
+def fixup_subjectid(subjectid):
+    return re.sub('[-_]', '', subjectid)
