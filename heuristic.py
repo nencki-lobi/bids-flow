@@ -66,18 +66,18 @@ def infotodict(seqinfo):
     """
 
     t1w = create_key(
-        'sub-{subject}/ses-{session}/anat/sub-{subject}_ses-{session}_T1w')
+        'sub-{subject}/{session}/anat/sub-{subject}_{session}_T1w')
     task_run = create_key(
-        'sub-{subject}/func/sub-{subject}_task-{tasklabel}_run-{runlabel}'
+        'sub-{subject}/{session}/func/sub-{subject}_{session}_task-{tasklabel}_run-{runlabel}'
         '_bold')
     bold = create_key(
-        'sub-{subject}/func/sub-{subject}_task-fmri_run-{item:01d}_bold')
+        'sub-{subject}/{session}/func/sub-{subject}_{session}_task-fmri_run-{item:01d}_bold')
     rest = create_key(
-        'sub-{subject}/func/sub-{subject}_task-rest_run-{item:01d}_bold')
+        'sub-{subject}/{session}/func/sub-{subject}_{session}_task-rest_run-{item:01d}_bold')
     fmap_phasediff = create_key(
-        'sub-{subject}/fmap/sub-{subject}_phasediff')
+        'sub-{subject}/{session}/fmap/sub-{subject}_{session}_phasediff')
     fmap_magnitude = create_key(
-        'sub-{subject}/fmap/sub-{subject}_magnitude')
+        'sub-{subject}/{session}/fmap/sub-{subject}_{session}_magnitude')
 
     info = {t1w: [], rest: [], bold: [], fmap_phasediff: [],
             fmap_magnitude: [], task_run: []}
