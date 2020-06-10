@@ -47,7 +47,11 @@ def create_key(template, outtype=('nii.gz',), annotation_classes=None):
 
 
 def infotoids(seqinfos, outdir):
-    return {'session': seqinfos[0].date}
+    seqinfos=list(seqinfos)
+    subject= fixup_subjectid(seqinfos[0].patient_id)
+    return {
+        'subject': subject,
+        'session': seqinfos[0].date}
 
 
 def infotodict(seqinfo):
@@ -111,3 +115,6 @@ def infotodict(seqinfo):
         elif ('ep2d_bold' in s.protocol_name) or ('task' in s.protocol_name) or ('FMRI' in s.protocol_name):
             info[bold].append(s.series_id)
     return info
+
+def fixup_subjectid(subjectid):
+    return re.sub('[-_]', '', subjectid)
